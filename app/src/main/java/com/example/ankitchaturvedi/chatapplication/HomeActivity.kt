@@ -1,5 +1,6 @@
 package com.example.ankitchaturvedi.chatapplication
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -52,6 +53,10 @@ class HomeActivity : AppCompatActivity() {
 
         if (item?.itemId == R.id.logout){
             mAuth.signOut()
+        }
+        else if (item?.itemId == R.id.account_settings){
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
         }
         return true
     }

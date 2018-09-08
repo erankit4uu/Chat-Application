@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         })
         mbtn_exsisting.setOnClickListener(View.OnClickListener {
 
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         })
     }
