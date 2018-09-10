@@ -10,6 +10,8 @@ import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class SignUpActivity : AppCompatActivity() {
     lateinit var mname: EditText
@@ -18,7 +20,7 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var mcreateAccount: Button
 
     private var mAuth: FirebaseAuth? = null
-
+    lateinit var storeDatabaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,16 +41,26 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     fun registerUser(name: String, email: String, password: String) {
-            mAuth?.createUserWithEmailAndPassword(email, password)?.addOnCompleteListener(
-                    OnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent)
-                            Toast.makeText(this, "Account Created Successfully", Toast.LENGTH_LONG)
-                                    .show()
-                            finish()
-                        }
-                    })
+        mAuth?.createUserWithEmailAndPassword(email, password)?.addOnCompleteListener(
+                OnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val current_user = mAuth?.currentUser?.uid
+                        storeDatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child(current_user.toString())
+                        storeDatabaseReference.child("user_name").setValue(name)
+                        storeDatabaseReference.child("user_status").setValue("Hello")
+                        storeDatabaseReference.child("user_image").setValue("default pic")
+                                .addOnCompleteListener(OnCompleteListener {task ->
+                                    if (task.isSuccessful){
+                                        val intent = Intent(this, LoginActivity::class.java)
+                                        startActivity(intent)
+                                        Toast.makeText(this, "Account Created Successfully", Toast.LENGTH_LONG)
+                                                .show()
+                                        finish()
+                                    }
+                                })
+//
+                    }
+                })
     }
 
 }

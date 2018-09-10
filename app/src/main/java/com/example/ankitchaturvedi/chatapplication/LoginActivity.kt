@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class LoginActivity : AppCompatActivity() {
     lateinit var memail : EditText
@@ -19,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var password : String
 
     lateinit var mAuth : FirebaseAuth
+//    lateinit var storeDatabaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,7 @@ class LoginActivity : AppCompatActivity() {
         }else{
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful){
+
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                 }else
